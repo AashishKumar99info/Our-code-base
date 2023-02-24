@@ -90,23 +90,34 @@
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.4/axios.min.js"></script>
   <script>
-  let form = document.querySelector("form").addEventListener("submit", myfun);
-  async function myfun(e) {
-    e.preventDefault();
-    let inputName = document.querySelector("#name").value;
-    let inputEmail = document.querySelector("#email").value;
-    let inputNumber = document.querySelector("#number").value;
-  
-    let obj={
-        inputName,
-        inputEmail,
-        inputNumber
-    }
-    try {
-        let respone = await axios.post("https://crudcrud.com/api/8a3b0ce95a02431fbebe25804874a107/user",obj)
-        console.log(respone)
+    async function myfun(){
+        try {
+        let respone = await axios.get("https://crudcrud.com/api/8a3b0ce95a02431fbebe25804874a107/user")
+
+        console.log(respone.data)
+
+        for(var i=0;i<respone.data.length;i++)
+        {
+            showuser(respone.data[i])   
+        }
     } catch (error) {
         console.log(error)
     }
-  }</script>
+}
+     myfun()
+     function showuser(data){
+        console.log(data)
+        var div = document.createElement("div")
+        div.innerText=data.inputName
+        document.querySelector("body").append(div)
+
+        var div = document.createElement("div")
+        div.innerText=data.inputEmail
+        document.querySelector("body").append(div)
+
+        var div = document.createElement("div")
+        div.innerText=data.inputNumber
+        document.querySelector("body").append(div)
+    }
+</script>
 </html>
