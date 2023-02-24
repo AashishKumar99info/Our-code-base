@@ -107,17 +107,34 @@
      myfun()
      function showuser(data){
         console.log(data)
-        var div = document.createElement("div")
-        div.innerText=data.inputName
+        
+        let div = document.createElement("div")
+        let h = document.createElement("h1")
+        h.innerText=data.inputName
+        let p=document.createElement("p")
+        p.innerText=data.inputEmail
+        let p1=document.createElement("p")
+        p1.innerText=data.inputNumber
+        let button = document.createElement("button")
+        button.innerText="delete"
+        button.onclick = () => {
+        deleteUser(data._id);
+        };
+        div.append(h,p,p1,button)
+        // div.innerText=`${data.inputName},${data.inputEmail},${data.inputNumber}`
         document.querySelector("body").append(div)
 
-        var div = document.createElement("div")
-        div.innerText=data.inputEmail
-        document.querySelector("body").append(div)
-
-        var div = document.createElement("div")
-        div.innerText=data.inputNumber
-        document.querySelector("body").append(div)
+        
     }
+    async function deleteUser(obj) {
+  try {
+    let res = await axios.delete(
+      `https://crudcrud.com/api/ba2bc32dd8df4714a32027fb63f0cc4c/user/${obj}`
+    );
+    window.location.reload()
+  } catch (error) {
+    console.log("error:", error);
+  }
+}
 </script>
 </html>
