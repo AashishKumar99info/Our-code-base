@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+   
+    <title>Document</title>
+</head>
+
+<body>
+    <form onsubmit="saveToCrudCrud(event)">
+  
+        <label for="selling">Selling Price:</label>
+  
+        <input type="price" id="price" name="price" required>
+  
+        <label for = "Productname">Product Name:</label>
+  
+        <input type = "productname" id="productname" name="productname" >
+  
+        <label for="category">Choose a Category:</label>
+
+        <select name="category" id="category">
+            <option>ElectronicsItems</option>
+            <option >FoodItems</option>
+            <option>SkincareItems</option>
+        </select>
+        <button>submit</button><br>
+        <h3>Products:</h3><br>
+        <h5>Electronics Items</h5>
+        <ul id="list1"></ul>
+        <h5>Food Items</h5>
+        <ul id="list2"></ul>
+        <h5>Skincare Items</h5>
+        <ul id="list3"></ul>
+    </form><ul id = 'ListOfCategory'></ul>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.5/axios.min.js"></script>
+    <script>
+        async function saveToCrudCrud(event){
+
+try{
+
+event.preventDefault();
+
+const price = event.target.price.value;
+
+const productname = event.target.productname.value;
+
+const category = event.target.category.value;
+
+const obj = {
+
+    price,
+
+    productname,
+
+    category
+
+}
+const response=await axios.post("https://crudcrud.com/api/b1044d94a5d24b73b75643693e5ce8a7/sellerDetails",obj)
+
+   showNewUserScreen(response.data)
+}
+
+catch(err){
+    console.log(err);
+}
+
+}
+
+
+async function showNewUserScreen(obj){
+
+try{
+const electronic = document.getElementById('list1');
+const food = document.getElementById('list2');
+const skin= document.getElementById('list3');
+
+const childElem = document.createElement('li');
+
+childElem.innerHTML = `${obj.price}-${obj.productname}-${obj.category}`;
+
+const deleteButton = document.createElement('button');
+deleteButton.innerHTML=`Delete`;
+const editButton = document.createElement('button');
+editButton.innerHTML=`Edit`;
+childElem.appendChild(deleteButton);
+childElem.appendChild(editButton);
+if(obj.category==='ElectronicsItems')
+    electronic.appendChild(childElem);
+    else if(obj.category==='FoodItems')
+    food.appendChild(childElem);
+    else 
+    skin.appendChild(childElem);
+
+deleteButton.onclick = async () => {
+  try{
+    console.log(obj._id);
+   const response= await axios.delete(`https://crudcrud.com/api/b1044d94a5d24b73b75643693e5ce8a7/sellerDetails/${obj._id}`)
+   if(obj.category==='ElectronicsItems')
+      electronic.removeChild(childElem);
+      else if(obj.category==='FoodItems')
+      food.removeChild(childElem);
+      else 
+      skin.removeChild(childElem);
+  }
+  catch(err){
+    console.log(err);
+  }
+    
+}
+editButton.onclick = async () => {
+    try{
+     const  response= await axios.delete(`https://crudcrud.com/api/b1044d94a5d24b73b75643693e5ce8a7/sellerDetails/${obj._id}`)
+      document.getElementById('price').value=obj.price;
+      document.getElementById('productname').value=obj.productname;
+      document.getElementById('category').value=obj.category;
+      if(obj.category==='ElectronicsItems')
+      electronic.removeChild(childElem);
+      else if(obj.category==='FoodItems')
+      food.removeChild(childElem);
+      else 
+      skin.removeChild(childElem);
+    }
+    catch(err){
+      console.log(err);
+    }
+      
+  }
+document.getElementById("price").value="";
+document.getElementById("productname").value="";
+document.getElementById("category").value="";
+}
+catch(err){
+    console.log(err);
+}
+}
+window.addEventListener("DOMContentLoaded",async ()=>{
+try{
+const response= await axios.get(`https://crudcrud.com/api/b1044d94a5d24b73b75643693e5ce8a7/sellerDetails`)
+for(let i=0;i<response.data.length;i++)
+{
+showNewUserScreen(response.data[i]);
+}
+}
+catch(err){
+console.log(err);
+}
+})
+</script>
+</body>
+</html>
