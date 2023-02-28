@@ -7,11 +7,56 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
    
     <title>Document</title>
+    <style>
+      body{
+        font-family: cursive;
+        width: 50%;
+        margin: auto;
+        margin-top: 10px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        padding: 20px;
+        box-shadow: 10px 10px 10px #ccc;
+      }
+      div:nth-child(1){
+        display: flex ;
+        flex-direction: column; 
+        /* align-items: center; */
+        /* justify-content: space-evenly; */
+        gap: 10px;
+        
+      }
+      /* added */
+      div :nth-child(6){
+        margin-bottom: 20px;
+      }
+      label + select {
+        height: 32px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+      /* added float rigth not working */
+      button{
+        height: 32px;
+        width: 25%; 
+        margin-left: 75%;
+      }
+      input{
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+       /* input.right {
+        height: 40px;
+        float:right;
+      } */
+
+      
+    </style>
 </head>
 
 <body>
     <form onsubmit="saveToCrudCrud(event)">
-  
+        <div>
         <label for="selling">Selling Price:</label>
   
         <input type="price" id="price" name="price" required>
@@ -27,7 +72,9 @@
             <option >FoodItems</option>
             <option>SkincareItems</option>
         </select>
-        <button>submit</button><br>
+        <button class="right">submit</button>
+      </div>
+      <div>
         <h3>Products:</h3><br>
         <h5>Electronics Items</h5>
         <ul id="list1"></ul>
@@ -35,6 +82,7 @@
         <ul id="list2"></ul>
         <h5>Skincare Items</h5>
         <ul id="list3"></ul>
+      </div>
     </form><ul id = 'ListOfCategory'></ul>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.5/axios.min.js"></script>
     <script>
@@ -59,7 +107,8 @@ const obj = {
     category
 
 }
-const response=await axios.post("https://crudcrud.com/api/b1044d94a5d24b73b75643693e5ce8a7/sellerDetails",obj)
+// localStorage.setItem("data",JSON.stringify(obj))
+const response=await axios.post("https://crudcrud.com/api/99475b336686412cae4ec5ad1bd501f2/s",obj)
 
    showNewUserScreen(response.data)
 }
@@ -98,7 +147,7 @@ if(obj.category==='ElectronicsItems')
 deleteButton.onclick = async () => {
   try{
     console.log(obj._id);
-   const response= await axios.delete(`https://crudcrud.com/api/b1044d94a5d24b73b75643693e5ce8a7/sellerDetails/${obj._id}`)
+   const response= await axios.delete(`https://crudcrud.com/api/99475b336686412cae4ec5ad1bd501f2/s${obj._id}`)
    if(obj.category==='ElectronicsItems')
       electronic.removeChild(childElem);
       else if(obj.category==='FoodItems')
@@ -113,7 +162,7 @@ deleteButton.onclick = async () => {
 }
 editButton.onclick = async () => {
     try{
-     const  response= await axios.delete(`https://crudcrud.com/api/b1044d94a5d24b73b75643693e5ce8a7/sellerDetails/${obj._id}`)
+     const  response= await axios.delete(`https://crudcrud.com/api/99475b336686412cae4ec5ad1bd501f2/s${obj._id}`)
       document.getElementById('price').value=obj.price;
       document.getElementById('productname').value=obj.productname;
       document.getElementById('category').value=obj.category;
@@ -139,7 +188,7 @@ catch(err){
 }
 window.addEventListener("DOMContentLoaded",async ()=>{
 try{
-const response= await axios.get(`https://crudcrud.com/api/b1044d94a5d24b73b75643693e5ce8a7/sellerDetails`)
+const response= await axios.get(`https://crudcrud.com/api/99475b336686412cae4ec5ad1bd501f2/s`)
 for(let i=0;i<response.data.length;i++)
 {
 showNewUserScreen(response.data[i]);
